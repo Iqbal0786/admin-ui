@@ -32,7 +32,7 @@ export default function ProductTable({data}) {
           <TableBody>
             {data.map((item)=>{
               return (
-                <TableRow >
+                <TableRow  key={item.id}>
               <TableCell > <Checkbox   /></TableCell>
               <TableCell >{item.name}</TableCell>
               <TableCell >{item.email}</TableCell>

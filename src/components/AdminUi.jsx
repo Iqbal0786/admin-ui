@@ -14,7 +14,7 @@ export default function AdminUi() {
     const [paginatedData,setPaginatedData]=useState([]);
     const [pageNumber,setPageNumber]=useState(1)
     const pageSize= Math.ceil(userData.length/10)
-    let filterData= paginatedData || userData;
+    let filterData= paginatedData.length>0?paginatedData: userData;
     function paginate(array, page_size, page_number) {
         // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
         return array.slice((page_number - 1) * page_size, page_number * page_size);

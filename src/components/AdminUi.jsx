@@ -70,6 +70,11 @@ export default function AdminUi() {
         
     }
 
+   const getUpdatedData=(updatedValues)=>{
+      console.log("from admin ui component",updatedValues)
+      setPaginatedData(updatedValues)
+   }
+
     function deleteMultipleHandler(){
       
         let newData;
@@ -126,7 +131,7 @@ export default function AdminUi() {
         <Button variant='outlined' onClick={searchHandler}>Search</Button>
         </Box>
 
-        <ProductTable data={filterData} deleteSingle={deleteSingle} deleteMultiple={deleteMultiple}/>
+        <ProductTable data={filterData} deleteSingle={deleteSingle} deleteMultiple={deleteMultiple} getUpdatedData={getUpdatedData}/>
         <Box sx={{width:"90%" , margin:"auto", display:"flex",justifyContent:"space-between"}}>
          <Box>
             <Button variant='contained' onClick={deleteMultipleHandler}>Delete Selected</Button>

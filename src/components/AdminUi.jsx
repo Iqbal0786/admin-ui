@@ -14,9 +14,9 @@ export default function AdminUi() {
     const [paginatedData,setPaginatedData]=useState([]);
     const [searchedData,setSearchedData]=useState([]);
     const [searchText,setSerachText]= useState("");
-    const [pageNumber,setPageNumber]=useState(1)
+    const [toDeleteData,setTodeleteData]=useState([])
     const pageSize=  searchedData.length>0?Math.ceil(searchedData.length/10):Math.ceil(userData.length/10);
-     let filterData= paginatedData.length>0?paginatedData:userData;
+     let filterData= paginatedData.length>0?paginatedData:paginate(userData,10,2);
     
     function paginate(array, page_size, page_number) {
         // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
@@ -60,6 +60,35 @@ export default function AdminUi() {
 
     }
 
+    const deleteSingle=(data)=>{
+         setPaginatedData( paginatedData.filter((item)=>item.id!=data.id))
+    }
+    const deleteMultiple=(data)=>{
+              setTodeleteData(data)
+     
+       // setPaginatedData(data)
+        
+    }
+
+    function deleteMultipleHandler(){
+      
+        let newData;
+         if(toDeleteData.length>0){
+            for(let i=0;i<toDeleteData.length;i++){
+               if(i==0){
+                 newData=paginatedData.filter((elem)=>elem.id!=toDeleteData[i].id)
+               }
+               else{
+                newData=newData.filter((elem)=>elem.id!=toDeleteData[i].id)
+               }
+            }
+            // newData=paginatedData.filter((e)=>e.id!=toDeleteData.map((elem)=>elem.id))
+            setPaginatedData(newData)
+         }
+         console.log(newData)
+        
+    }
+
     useEffect(()=>{
         console.log("first useEffect")
          axios.get("https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json").then((res)=>{console.log(res.data)
@@ -97,10 +126,10 @@ export default function AdminUi() {
         <Button variant='outlined' onClick={searchHandler}>Search</Button>
         </Box>
 
-        <ProductTable data={filterData}/>
+        <ProductTable data={filterData} deleteSingle={deleteSingle} deleteMultiple={deleteMultiple}/>
         <Box sx={{width:"90%" , margin:"auto", display:"flex",justifyContent:"space-between"}}>
          <Box>
-            <Button variant='contained'>Delete Selected</Button>
+            <Button variant='contained' onClick={deleteMultipleHandler}>Delete Selected</Button>
          </Box>
          <Box>
      <Stack spacing={2}>

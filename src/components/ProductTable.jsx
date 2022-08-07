@@ -12,9 +12,25 @@ import Checkbox from '@mui/material/Checkbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function ProductTable({data}) {
+export default function ProductTable({data ,deleteSingle,deleteMultiple}) {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [checkedData, setcheckedData] = React.useState([]);
+
+  const checkBoxHandler=(e , item)=>{
+         if(e.target.checked){
+           let temp= checkedData;
+           temp.push(item)
+           setcheckedData([...temp])
+         }
+         else {
+           setcheckedData([...checkedData.filter((val)=>val.id!=item.id)])
+         }
+           
+      
+
+  }
+  React.useEffect(()=>{ deleteMultiple(checkedData)},[checkedData])
+  //console.log("checked data",checkedData)
 
   return (
     <Paper sx={{ width: '90%', overflow: 'hidden'  ,margin:"auto", marginTop:"40px", marginBottom:"50px"}}>
@@ -33,12 +49,14 @@ export default function ProductTable({data}) {
             {data.map((item)=>{
               return (
                 <TableRow  key={item.id}>
-              <TableCell > <Checkbox   /></TableCell>
+              <TableCell > <Checkbox onChange={(e)=>{checkBoxHandler(e,item)}}  /></TableCell>
               <TableCell >{item.name}</TableCell>
               <TableCell >{item.email}</TableCell>
               <TableCell >{item.role}</TableCell>
               <TableCell >
-                <EditIcon sx={{color:"green" , cursor:"pointer"}}/>     <DeleteIcon sx={{color:"red" , cursor:"pointer"}}/>
+                <EditIcon sx={{color:"green" , cursor:"pointer"}}/>     <DeleteIcon sx={{color:"red" , cursor:"pointer"}} onClick={()=>{
+                  deleteSingle(item)
+                }}/>
               </TableCell>
             </TableRow>
               )

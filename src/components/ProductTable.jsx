@@ -144,6 +144,8 @@ export default function ProductTable({
             transform: "translate(-50%, -50%)",
             width: 600,
             bgcolor: "background.paper",
+            border: "none",
+            borderRadius:"10px",
             boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
             p: 4,
           }}
@@ -180,10 +182,10 @@ export default function ProductTable({
               onChange={getUserData}
             />
           </Box>
-          <Button variant="outlined" onClick={handleClose}>
+          <Button variant="contained" onClick={handleClose} sx={{backgroundColor:"red",color:"white"}}>
             Cancel
           </Button>
-          <Button variant="outlined" onClick={updateHandler}>
+          <Button variant="contained" onClick={updateHandler} sx={{marginLeft:"10px" , backgroundColor:"green" ,color:"white"}}>
             Update
           </Button>
         </Box>

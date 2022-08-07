@@ -23,6 +23,7 @@ export default function ProductTable({
   getUpdatedData,
 }) {
   const [checkedData, setcheckedData] = React.useState([]);
+  const [checkedRowIndex,setCheckedRowIndex]=React.useState([])
   const [userData, setUserData] = React.useState({});
   const [open, setOpen] = React.useState({
     open: false,
@@ -50,16 +51,21 @@ export default function ProductTable({
     setOpen({ open: false, singleUser: "" });
   };
 
-  const checkBoxHandler = (e, item) => {
+  const checkBoxHandler = (e, item , index) => {
     if (e.target.checked) {
+       let selectedRow= checkedRowIndex;
       let temp = checkedData;
       temp.push(item);
+      selectedRow.push(item.id)
+      setCheckedRowIndex([...selectedRow])
       setcheckedData([...temp]);
     } else {
+      setCheckedRowIndex([...checkedRowIndex.filter((elem)=>elem!=item.id)])
       setcheckedData([...checkedData.filter((val) => val.id != item.id)]);
     }
   };
   console.log(userData);
+  console.log("selected row index arr",checkedRowIndex);
 
   React.useEffect(() => {
     deleteMultiple(checkedData);
@@ -69,6 +75,22 @@ export default function ProductTable({
     getUpdatedData(updatedUsersData);
   }, [updatedUsersData]);
   //console.log("checked data",checkedData)
+
+  // setBackgroundColor function to set row background color
+     function setBackgroundColor(arr,id){
+           if(arr.length==0){
+            return {backgroundColor:"white"}
+           }
+           
+           if(arr.includes(id)){
+            return {backgroundColor:"gray"}
+           }
+           else{
+            return {backgroundColor:"white"}
+           }
+        
+
+     }  
 
   return (
     <Paper
@@ -95,14 +117,17 @@ export default function ProductTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item) => {
+            {data.map((item , i) => {
+              let style= setBackgroundColor(checkedRowIndex,item.id)
+              console.log("getBackgoundcolor is called",style)
+               
               return (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    {" "}
+                <TableRow key={item.id} sx={style}>
+                <TableCell >
+                       {" "}
                     <Checkbox
                       onChange={(e) => {
-                        checkBoxHandler(e, item);
+                        checkBoxHandler(e, item ,i);
                       }}
                     />
                   </TableCell>

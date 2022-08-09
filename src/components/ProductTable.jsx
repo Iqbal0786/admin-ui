@@ -30,6 +30,7 @@ export default function ProductTable({
     singleUser: "",
   });
   const [updatedUsersData, setUpdatedUsersData] = React.useState([]);
+  const [isDefaultChecked,setIsDefaultChecked]=React.useState(false)
   const getUserData = (e) => {
     const { id, value } = e.target;
     setUserData({ ...userData, [id]: value });
@@ -57,13 +58,26 @@ export default function ProductTable({
       let temp = checkedData;
       temp.push(item);
       selectedRow.push(item.id)
+      // setIsDefaultChecked(true)
       setCheckedRowIndex([...selectedRow])
       setcheckedData([...temp]);
+     
     } else {
+      // setIsDefaultChecked(false)
       setCheckedRowIndex([...checkedRowIndex.filter((elem)=>elem!=item.id)])
       setcheckedData([...checkedData.filter((val) => val.id != item.id)]);
+   
     }
   };
+
+   function defaultCheckHandler(e){
+       if(e.target.checked){
+        setIsDefaultChecked(true)
+       }
+       else {
+        setIsDefaultChecked(false)
+       }
+   }
   console.log(userData);
   console.log("selected row index arr",checkedRowIndex);
 
@@ -108,7 +122,7 @@ export default function ProductTable({
             <TableRow>
               <TableCell>
                 {" "}
-                <Checkbox disabled />
+                <Checkbox  onChange={defaultCheckHandler} />
               </TableCell>
               <TableCell sx={{ fontWeight: "bolder" }}>Name</TableCell>
               <TableCell sx={{ fontWeight: "bolder" }}>Email</TableCell>
@@ -129,6 +143,8 @@ export default function ProductTable({
                       onChange={(e) => {
                         checkBoxHandler(e, item ,i);
                       }}
+                      //  checked={isDefaultChecked}
+                      // defaultChecked= {`${isDefaultChecked}`}
                     />
                   </TableCell>
                   <TableCell>{item.name}</TableCell>

@@ -16,21 +16,21 @@ const style = {
   p: 4,
 };
 
-export default function UpdateModal({state}) {
-  const [open, setOpen] = React.useState(state);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function UpdateModal({modalState,closeModalHanlder}) {
+  // const [open, setOpen] = React.useState(modalState);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
    const [name,setName]=React.useState("")
   const updateHandler=()=>{
-      alert(name)
-      setOpen(false)
+     alert(name);
+     closeModalHanlder()
   }
 
   return (
     <div>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={modalState}
+        onClose={closeModalHanlder}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -41,8 +41,11 @@ export default function UpdateModal({state}) {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           <TextField label="name" onChange={(e)=>{setName(e.target.value)}}/>
           </Typography>
-          <Button variant='outlined' onClick={handleClose}>Cancel</Button>
-          <Button variant='outlined' onClick={updateHandler}>Update</Button>
+          <Button variant='outlined' onClick={closeModalHanlder}>Cancel</Button>
+          <Button variant='outlined' onClick={()=>{
+             updateHandler();
+            
+          }}>Update</Button>
         </Box>
       </Modal>
     </div>

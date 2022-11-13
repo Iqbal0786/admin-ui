@@ -8,6 +8,7 @@ import ProductTable from './ProductTable';
 import axios from 'axios';
 import Pagination from "@mui/material/Pagination"
 import Stack from "@mui/material/Stack"
+import UpdateModal from './UpdateModal';
 
 export default function AdminUi() {
     const [userData,setUserData]=useState([]);
@@ -15,6 +16,11 @@ export default function AdminUi() {
     const [searchedData,setSearchedData]=useState([]);
     const [searchText,setSerachText]= useState("");
     const [toDeleteData,setTodeleteData]=useState([])
+    const [modalState,setmodalState]=useState(false);
+    const closeModalHanlder=()=>{
+
+       setmodalState(false)
+    }
     const pageSize=  searchedData.length>0?Math.ceil(searchedData.length/10):Math.ceil(userData.length/10);
      let filterData= paginatedData.length>0?paginatedData:paginate(userData,10,2);
     
@@ -129,6 +135,7 @@ export default function AdminUi() {
         <Box sx={{width:"400px", margin:"auto" , display:"flex", justifyContent:"space-between"}}>
         <TextField variant='outlined' label="Search by name,email or role" sx={{width:"290px"}}  onChange={getSearchInput}/>
         <Button variant='outlined' onClick={searchHandler}>Search</Button>
+        <Button variant='outlined' onClick={()=>{setmodalState(true)}}> Modal </Button>
         </Box>
 
         <ProductTable data={filterData} deleteSingle={deleteSingle} deleteMultiple={deleteMultiple} getUpdatedData={getUpdatedData}/>
@@ -144,7 +151,7 @@ export default function AdminUi() {
         </Box>
         
     </Box>
-   
+   <UpdateModal modalState={modalState} closeModalHanlder={closeModalHanlder}/>
    </>
   )
 }
